@@ -6,7 +6,9 @@
 
 [![Python](https://img.shields.io/badge/Python-3.9+-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+[![CI](https://github.com/zouyongfu/social-agent/actions/workflows/ci.yml/badge.svg)](https://github.com/zouyongfu/social-agent/actions/workflows/ci.yml)
 [![Version](https://img.shields.io/badge/version-0.1.0-orange.svg)](pyproject.toml)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
 
 Monitor, create, distribute, and analyze social media content across platforms — all powered by AI.
 
