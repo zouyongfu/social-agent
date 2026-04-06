@@ -5,8 +5,6 @@ Command-line interface for social-agent.
 from __future__ import annotations
 
 import asyncio
-import json
-import sys
 
 import click
 from rich.console import Console
@@ -130,7 +128,6 @@ def generate(topic, platform, style, keywords):
     """Generate content for social media platforms."""
     from .config import Settings
     from .agent import SocialAgent
-    from .content import GeneratedContent
 
     settings = Settings.load()
     agent = SocialAgent(settings)
