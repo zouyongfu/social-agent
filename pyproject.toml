@@ -41,7 +41,7 @@ bilibili = ["httpx", "beautifulsoup4"]
 dev = [
     "pytest>=7.0",
     "pytest-asyncio>=0.21",
-    "black>=23.0",
+    "black==25.11.0",
     "ruff>=0.1.0",
 ]
 all = [
