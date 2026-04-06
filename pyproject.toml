@@ -1,0 +1,67 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.backends._legacy:_Backend"
+
+[project]
+name = "social-agent"
+version = "0.1.0"
+description = "AI-powered social media operations framework - monitor, create, distribute, and analyze across platforms"
+readme = "README.md"
+license = {text = "MIT"}
+requires-python = ">=3.9"
+authors = [
+    {name = "zouyongfu", email = "1262802442@qq.com"}
+]
+keywords = ["ai", "agent", "social-media", "weibo", "xiaohongshu", "douyin", "automation", "mcp"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Internet",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+dependencies = [
+    "httpx>=0.25.0",
+    "pydantic>=2.0",
+    "apscheduler>=3.10",
+    "rich>=13.0",
+    "click>=8.1",
+]
+
+[project.optional-dependencies]
+weibo = ["httpx", "beautifulsoup4"]
+xiaohongshu = ["httpx", "playwright"]
+douyin = ["httpx", "playwright"]
+bilibili = ["httpx", "beautifulsoup4"]
+dev = [
+    "pytest>=7.0",
+    "pytest-asyncio>=0.21",
+    "black>=23.0",
+    "ruff>=0.1.0",
+]
+all = [
+    "social-agent[weibo,xiaohongshu,douyin,bilibili,dev]",
+]
+
+[project.scripts]
+social-agent = "social_agent.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.ruff]
+target-version = "py39"
+line-length = 100
+
+[tool.black]
+target-version = ["py39"]
+line-length = 100
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+asyncio_mode = "auto"
