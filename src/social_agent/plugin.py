@@ -116,9 +116,7 @@ class BaseContentPlugin(BasePlugin):
         ...
 
     @abstractmethod
-    async def adapt(
-        self, content: str, from_platform: str, to_platform: str
-    ) -> str:
+    async def adapt(self, content: str, from_platform: str, to_platform: str) -> str:
         """Adapt content from one platform style to another."""
         ...
 
@@ -185,7 +183,9 @@ class PluginManager:
 
         cls = self._plugin_classes.get(name)
         if not cls:
-            raise ValueError(f"Plugin '{name}' not found. Available: {list(self._plugin_classes.keys())}")
+            raise ValueError(
+                f"Plugin '{name}' not found. Available: {list(self._plugin_classes.keys())}"
+            )
 
         plugin = cls(config=config)
         await plugin.initialize()

@@ -135,8 +135,10 @@ class TaskScheduler:
                 should_run = False
 
                 if task.interval_seconds > 0:
-                    if task.last_run is None or \
-                       (now - task.last_run).total_seconds() >= task.interval_seconds:
+                    if (
+                        task.last_run is None
+                        or (now - task.last_run).total_seconds() >= task.interval_seconds
+                    ):
                         should_run = True
 
                 elif task.cron and self._should_run_cron(task, now):

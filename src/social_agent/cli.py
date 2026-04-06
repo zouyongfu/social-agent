@@ -34,7 +34,9 @@ def main():
 
 
 @main.command()
-@click.option("--provider", default=None, help="LLM provider (openai/claude/dashscope/zhipu/ollama)")
+@click.option(
+    "--provider", default=None, help="LLM provider (openai/claude/dashscope/zhipu/ollama)"
+)
 @click.option("--model", default=None, help="LLM model name")
 def status(provider, model):
     """Show current agent status."""
@@ -52,13 +54,15 @@ def status(provider, model):
 
     info = agent.get_status()
 
-    console.print(Panel(
-        f"[green]social-agent v{__version__}[/green]\n"
-        f"LLM: {info['llm_provider']} / {info['llm_model']}\n"
-        f"Platforms: {', '.join(info['platforms']) or 'None configured'}\n"
-        f"Plugins: {len(info['loaded_plugins'])} loaded",
-        title="Status",
-    ))
+    console.print(
+        Panel(
+            f"[green]social-agent v{__version__}[/green]\n"
+            f"LLM: {info['llm_provider']} / {info['llm_model']}\n"
+            f"Platforms: {', '.join(info['platforms']) or 'None configured'}\n"
+            f"Plugins: {len(info['loaded_plugins'])} loaded",
+            title="Status",
+        )
+    )
 
     # Show loaded plugins
     if info["loaded_plugins"]:
@@ -97,7 +101,9 @@ def trending(platform, limit):
     topics = run_async(agent.get_trending(platform=platform, limit=limit))
 
     if not topics:
-        console.print("[yellow]No trending topics found. Make sure platform plugins are configured.[/yellow]")
+        console.print(
+            "[yellow]No trending topics found. Make sure platform plugins are configured.[/yellow]"
+        )
         run_async(agent.shutdown())
         return
 
@@ -158,7 +164,9 @@ def generate(topic, platform, style, keywords):
         if content.hashtags:
             panel_content += f"\n[cyan]Tags:[/cyan] {' '.join(f'#{t}' for t in content.hashtags)}"
 
-        console.print(Panel(panel_content, title=f"Content for {content.platform}", border_style="green"))
+        console.print(
+            Panel(panel_content, title=f"Content for {content.platform}", border_style="green")
+        )
 
     run_async(agent.shutdown())
 
@@ -223,7 +231,11 @@ def publish(topic, platform, dry_run):
         with console.status("[bold green]Generating content (dry run)..."):
             contents = run_async(agent.create_content(topic=topic, platforms=platforms))
         for c in contents:
-            console.print(Panel(f"[cyan]{c.platform}[/cyan]\n{c.text}", title="Preview", border_style="yellow"))
+            console.print(
+                Panel(
+                    f"[cyan]{c.platform}[/cyan]\n{c.text}", title="Preview", border_style="yellow"
+                )
+            )
     else:
         with console.status("[bold green]Generating and publishing..."):
             results = run_async(agent.create_and_publish(topic=topic, platforms=platforms))

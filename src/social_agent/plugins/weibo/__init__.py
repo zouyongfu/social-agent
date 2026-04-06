@@ -85,6 +85,7 @@ class WeiboPlugin(BasePlatformPlugin):
         if self._client is None:
             try:
                 import httpx
+
                 self._client = httpx.AsyncClient(
                     headers=self._headers,
                     timeout=30.0,
@@ -138,15 +139,17 @@ class WeiboPlugin(BasePlatformPlugin):
                 for item in realtime[:limit]:
                     word = item.get("word", "")
                     # Remove emoji tags
-                    word = re.sub(r'<[^>]+>', '', word)
-                    results.append({
-                        "title": word,
-                        "hot_score": item.get("num", 0),
-                        "url": f"https://s.weibo.com/weibo?q=%23{word}%23",
-                        "label": item.get("label_name", ""),
-                        "category": item.get("category", ""),
-                        "raw_data": item,
-                    })
+                    word = re.sub(r"<[^>]+>", "", word)
+                    results.append(
+                        {
+                            "title": word,
+                            "hot_score": item.get("num", 0),
+                            "url": f"https://s.weibo.com/weibo?q=%23{word}%23",
+                            "label": item.get("label_name", ""),
+                            "category": item.get("category", ""),
+                            "raw_data": item,
+                        }
+                    )
                 return results
         except Exception as e:
             logger.debug(f"Desktop trending API failed: {e}")
@@ -166,12 +169,18 @@ class WeiboPlugin(BasePlatformPlugin):
                 results = []
                 for item in card_group[:limit]:
                     desc = item.get("desc", "")
-                    results.append({
-                        "title": desc,
-                        "hot_score": item.get("pic_num", 0),
-                        "url": item.get("scheme", ""),
-                        "label": item.get("card_addition", {}).get("title", "") if item.get("card_addition") else "",
-                    })
+                    results.append(
+                        {
+                            "title": desc,
+                            "hot_score": item.get("pic_num", 0),
+                            "url": item.get("scheme", ""),
+                            "label": (
+                                item.get("card_addition", {}).get("title", "")
+                                if item.get("card_addition")
+                                else ""
+                            ),
+                        }
+                    )
                 return results
         except Exception as e:
             logger.error(f"Mobile trending API also failed: {e}")
@@ -201,21 +210,25 @@ class WeiboPlugin(BasePlatformPlugin):
                 text_match = re.search(r'<p[^>]*class="txt"[^>]*>(.*?)</p>', post_html, re.DOTALL)
                 author_match = re.search(r'<a[^>]*class="name"[^>]*>(.*?)</a>', post_html)
                 if text_match:
-                    text = re.sub(r'<[^>]+>', '', text_match.group(1)).strip()
+                    text = re.sub(r"<[^>]+>", "", text_match.group(1)).strip()
                     author = author_match.group(1).strip() if author_match else ""
-                    results.append({
-                        "title": text[:100],
-                        "text": text,
-                        "author": author,
-                        "platform": "weibo",
-                    })
+                    results.append(
+                        {
+                            "title": text[:100],
+                            "text": text,
+                            "author": author,
+                            "platform": "weibo",
+                        }
+                    )
 
             return results
         except Exception as e:
             logger.error(f"Weibo search failed: {e}")
             return []
 
-    async def publish(self, text: str, images: Optional[List[str]] = None, **kwargs) -> Dict[str, Any]:
+    async def publish(
+        self, text: str, images: Optional[List[str]] = None, **kwargs
+    ) -> Dict[str, Any]:
         """
         Publish a new post to Weibo.
 
@@ -352,15 +365,17 @@ class WeiboPlugin(BasePlatformPlugin):
             posts = []
             if data.get("data", {}).get("list"):
                 for item in data["data"]["list"][:limit]:
-                    posts.append({
-                        "id": item.get("id", ""),
-                        "text": item.get("text_raw", item.get("text", "")),
-                        "created_at": item.get("created_at", ""),
-                        "reposts_count": item.get("reposts_count", 0),
-                        "comments_count": item.get("comments_count", 0),
-                        "attitudes_count": item.get("attitudes_count", 0),
-                        "source": item.get("source", ""),
-                    })
+                    posts.append(
+                        {
+                            "id": item.get("id", ""),
+                            "text": item.get("text_raw", item.get("text", "")),
+                            "created_at": item.get("created_at", ""),
+                            "reposts_count": item.get("reposts_count", 0),
+                            "comments_count": item.get("comments_count", 0),
+                            "attitudes_count": item.get("attitudes_count", 0),
+                            "source": item.get("source", ""),
+                        }
+                    )
             return posts
         except Exception as e:
             logger.error(f"Failed to get user posts: {e}")

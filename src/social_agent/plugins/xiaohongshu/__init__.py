@@ -61,6 +61,7 @@ class XiaohongshuPlugin(BasePlatformPlugin):
     async def _get_client(self):
         if self._client is None:
             import httpx
+
             self._client = httpx.AsyncClient(
                 headers=self._headers,
                 timeout=30.0,
@@ -96,12 +97,14 @@ class XiaohongshuPlugin(BasePlatformPlugin):
             results = []
             items = data.get("data", {}).get("items", [])
             for item in items[:limit]:
-                results.append({
-                    "title": item.get("word", item.get("name", "")),
-                    "hot_score": item.get("view_count", 0),
-                    "url": item.get("url", ""),
-                    "category": item.get("category", ""),
-                })
+                results.append(
+                    {
+                        "title": item.get("word", item.get("name", "")),
+                        "hot_score": item.get("view_count", 0),
+                        "url": item.get("url", ""),
+                        "category": item.get("category", ""),
+                    }
+                )
             return results
         except Exception as e:
             logger.error(f"XHS trending failed: {e}")
@@ -131,19 +134,23 @@ class XiaohongshuPlugin(BasePlatformPlugin):
             items = data.get("data", {}).get("items", [])
             for item in items[:limit]:
                 note = item.get("note_card", item)
-                results.append({
-                    "title": note.get("title", note.get("display_title", "")),
-                    "text": note.get("desc", ""),
-                    "author": note.get("user", {}).get("nickname", ""),
-                    "likes": note.get("liked_count", ""),
-                    "platform": "xiaohongshu",
-                })
+                results.append(
+                    {
+                        "title": note.get("title", note.get("display_title", "")),
+                        "text": note.get("desc", ""),
+                        "author": note.get("user", {}).get("nickname", ""),
+                        "likes": note.get("liked_count", ""),
+                        "platform": "xiaohongshu",
+                    }
+                )
             return results
         except Exception as e:
             logger.error(f"XHS search failed: {e}")
             return []
 
-    async def publish(self, text: str, images: Optional[List[str]] = None, **kwargs) -> Dict[str, Any]:
+    async def publish(
+        self, text: str, images: Optional[List[str]] = None, **kwargs
+    ) -> Dict[str, Any]:
         """Publish a note to Xiaohongshu."""
         raise NotImplementedError(
             "Xiaohongshu publish requires browser automation. "

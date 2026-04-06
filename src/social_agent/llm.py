@@ -82,6 +82,7 @@ class OpenAIAdapter(BaseLLMAdapter):
         if self._client is None:
             try:
                 import httpx
+
                 self._client = httpx.AsyncClient(
                     base_url=self.config.base_url,
                     headers={

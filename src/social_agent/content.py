@@ -199,9 +199,7 @@ class ContentEngine:
                 hashtags=[request.topic],
             )
 
-    async def adapt(
-        self, content: str, from_platform: str, to_platform: str
-    ) -> GeneratedContent:
+    async def adapt(self, content: str, from_platform: str, to_platform: str) -> GeneratedContent:
         """
         Adapt content from one platform style to another.
 
@@ -241,9 +239,7 @@ class ContentEngine:
         except (json.JSONDecodeError, KeyError):
             return GeneratedContent(platform=to_platform, text=raw)
 
-    async def batch_generate_topics(
-        self, niche: str, count: int = 5
-    ) -> List[str]:
+    async def batch_generate_topics(self, niche: str, count: int = 5) -> List[str]:
         """Generate trending topic ideas for a given niche."""
         system = Message(
             role="system",

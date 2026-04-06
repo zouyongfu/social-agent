@@ -128,7 +128,9 @@ class SocialAgent:
         if platform:
             platforms = [platform]
         else:
-            platforms = [p.meta.name for p in self.plugin_manager.get_plugins_by_type(PluginType.PLATFORM)]
+            platforms = [
+                p.meta.name for p in self.plugin_manager.get_plugins_by_type(PluginType.PLATFORM)
+            ]
 
         for pname in platforms:
             plugin = self.plugin_manager.get_plugin(pname)
@@ -154,16 +156,11 @@ class SocialAgent:
         topics.sort(key=lambda t: t.hot_score, reverse=True)
         return topics[:limit]
 
-    async def monitor_and_alert(
-        self, keywords: List[str], check_interval: int = 300
-    ) -> None:
+    async def monitor_and_alert(self, keywords: List[str], check_interval: int = 300) -> None:
         """Monitor trending topics for specific keywords and alert."""
         while True:
             trending = await self.get_trending(limit=50)
-            matches = [
-                t for t in trending
-                if any(kw.lower() in t.title.lower() for kw in keywords)
-            ]
+            matches = [t for t in trending if any(kw.lower() in t.title.lower() for kw in keywords)]
             if matches:
                 logger.info(f"🔥 Found {len(matches)} trending matches for {keywords}")
                 for match in matches:
@@ -270,7 +267,9 @@ class SocialAgent:
         if platform:
             platforms = [platform]
         else:
-            platforms = [p.meta.name for p in self.plugin_manager.get_plugins_by_type(PluginType.PLATFORM)]
+            platforms = [
+                p.meta.name for p in self.plugin_manager.get_plugins_by_type(PluginType.PLATFORM)
+            ]
 
         for pname in platforms:
             plugin = self.plugin_manager.get_plugin(pname)
@@ -327,6 +326,7 @@ class SocialAgent:
         style: str = "professional",
     ) -> None:
         """Schedule a daily content generation and publishing task."""
+
         async def task():
             await self.create_and_publish(topic, platforms, style)
 
@@ -344,12 +344,10 @@ class SocialAgent:
         interval_minutes: int = 30,
     ) -> None:
         """Schedule a trending topic monitor."""
+
         async def task():
             trending = await self.get_trending(limit=50)
-            matches = [
-                t for t in trending
-                if any(kw.lower() in t.title.lower() for kw in keywords)
-            ]
+            matches = [t for t in trending if any(kw.lower() in t.title.lower() for kw in keywords)]
             if matches:
                 for match in matches:
                     logger.info(

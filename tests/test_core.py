@@ -15,12 +15,14 @@ class TestConfig:
 
     def test_settings_load(self):
         from social_agent.config import Settings
+
         settings = Settings.load()
         assert settings is not None
         assert settings.llm.provider in ("openai", "claude", "dashscope", "zhipu", "ollama")
 
     def test_llm_config_from_env(self):
         from social_agent.config import LLMConfig
+
         # Test default
         config = LLMConfig.from_env()
         assert config.provider == "openai"
@@ -34,6 +36,7 @@ class TestConfig:
 
     def test_settings_data_dir(self):
         from social_agent.config import Settings
+
         settings = Settings.load()
         data_dir = settings.ensure_data_dir()
         assert data_dir.exists()
@@ -42,6 +45,7 @@ class TestConfig:
 
     def test_platform_config(self):
         from social_agent.config import PlatformConfig
+
         config = PlatformConfig(name="weibo", cookie="test")
         assert config.name == "weibo"
         assert config.enabled is True
@@ -52,23 +56,27 @@ class TestLLM:
 
     def test_create_adapter_openai(self):
         from social_agent.llm import create_llm_adapter, OpenAIAdapter
+
         adapter = create_llm_adapter()
         assert isinstance(adapter, OpenAIAdapter)
 
     def test_create_adapter_claude(self):
         from social_agent.llm import create_llm_adapter, ClaudeAdapter, LLMConfig
+
         config = LLMConfig(provider="claude", api_key="test")
         adapter = create_llm_adapter(config)
         assert isinstance(adapter, ClaudeAdapter)
 
     def test_message_dataclass(self):
         from social_agent.llm import Message
+
         msg = Message(role="user", content="Hello")
         assert msg.role == "user"
         assert msg.content == "Hello"
 
     def test_llm_response_dataclass(self):
         from social_agent.llm import LLMResponse
+
         resp = LLMResponse(content="Hi", model="gpt-4")
         assert resp.content == "Hi"
         assert resp.model == "gpt-4"
@@ -79,6 +87,7 @@ class TestPlugin:
 
     def test_plugin_meta(self):
         from social_agent.plugin import PluginMeta, PluginType, ActionScope
+
         meta = PluginMeta(
             name="test",
             plugin_type=PluginType.PLATFORM,
@@ -124,6 +133,7 @@ class TestContentEngine:
 
     def test_platform_guides(self):
         from social_agent.content import PLATFORM_GUIDES
+
         assert "weibo" in PLATFORM_GUIDES
         assert "xiaohongshu" in PLATFORM_GUIDES
         assert "douyin" in PLATFORM_GUIDES
@@ -132,6 +142,7 @@ class TestContentEngine:
 
     def test_content_request(self):
         from social_agent.content import ContentRequest
+
         req = ContentRequest(
             topic="AI news",
             platforms=["weibo", "xiaohongshu"],
@@ -144,6 +155,7 @@ class TestContentEngine:
 
     def test_generated_content(self):
         from social_agent.content import GeneratedContent
+
         content = GeneratedContent(
             platform="weibo",
             text="Test content",
@@ -235,6 +247,7 @@ class TestAgent:
 
     def test_trending_topic_dataclass(self):
         from social_agent.agent import TrendingTopic
+
         topic = TrendingTopic(
             platform="weibo",
             title="AI News",
@@ -245,6 +258,7 @@ class TestAgent:
 
     def test_publish_result_dataclass(self):
         from social_agent.agent import PublishResult
+
         result = PublishResult(
             platform="weibo",
             success=True,
@@ -255,6 +269,7 @@ class TestAgent:
 
     def test_analysis_report_dataclass(self):
         from social_agent.agent import AnalysisReport
+
         report = AnalysisReport(period="7d")
         assert report.period == "7d"
         assert report.total_posts == 0
