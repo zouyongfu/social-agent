@@ -6,11 +6,10 @@ Supports: read (trending, search, user posts), write (publish, repost, comment, 
 
 from __future__ import annotations
 
+import json
 import logging
 import re
-import time
 from typing import Any, Dict, List, Optional
-from urllib.parse import urlencode
 
 from ..plugin import (
     ActionScope,
@@ -97,7 +96,7 @@ class WeiboPlugin(BasePlatformPlugin):
 
     async def initialize(self) -> None:
         await super().initialize()
-        client = await self._get_client()
+        await self._get_client()
 
         # Test authentication
         auth_valid = await self.verify_auth()
@@ -370,8 +369,6 @@ class WeiboPlugin(BasePlatformPlugin):
     async def _upload_image(self, client, image_source: str) -> Optional[str]:
         """Upload an image to Weibo and return pic_id."""
         try:
-            import httpx
-
             files = {}
             if image_source.startswith(("http://", "https://")):
                 # Download image first
