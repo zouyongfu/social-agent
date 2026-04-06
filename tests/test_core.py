@@ -1,12 +1,11 @@
 """Tests for social-agent core framework."""
 
 import os
+import sys
 import pytest
-import asyncio
 
 # Add src to path
 sys_path = os.path.join(os.path.dirname(__file__), "..", "src")
-import sys
 if sys_path not in sys.path:
     sys.path.insert(0, sys_path)
 

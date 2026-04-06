@@ -7,7 +7,6 @@ Supports: read (trending, search, notes), write (publish notes)
 from __future__ import annotations
 
 import logging
-import re
 from typing import Any, Dict, List, Optional
 
 from ..plugin import (

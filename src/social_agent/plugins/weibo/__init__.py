@@ -6,7 +6,6 @@ Supports: read (trending, search, user posts), write (publish, repost, comment, 
 
 from __future__ import annotations
 
-import json
 import logging
 import re
 import time

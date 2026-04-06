@@ -7,7 +7,6 @@ Supports: OpenAI, Claude, DashScope (Qwen), Zhipu (GLM), Ollama (local)
 from __future__ import annotations
 
 import json
-import os
 from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
 from typing import Any, AsyncIterator, Dict, List, Optional
